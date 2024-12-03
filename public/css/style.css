@@ -1,0 +1,291 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url('/images/background2.jpg');
+  background-size: 100%;
+  background-position: center;
+  color: #333;
+  height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Header */
+.header {
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent */
+  color: white;
+  padding: 15px;
+}
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 15px;
+}
+
+.navbar ul {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.navbar li {
+  position: relative; /* Needed for dropdown positioning */
+  margin-left: 20px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px 15px;
+}
+
+.navbar a:hover {
+  background-color: #555;
+  border-radius: 5px;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  display: none; /* Hidden by default */
+  position: absolute;
+  top: 100%; /* Positions below the parent menu */
+  left: 0;
+  background-color: #444;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  list-style: none;
+  padding: 10px 0;
+  z-index: 1000;
+}
+
+.dropdown-menu li {
+  margin: 0;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+  background-color: #666;
+}
+
+/* Show Dropdown on Hover */
+.dropdown:hover .dropdown-menu {
+  display: block; /* Show menu when parent is hovered */
+}
+
+
+/* Hero Section */
+.hero {
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+}
+
+.btn-primary {
+  background-color: #007BFF;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Course Categories Section */
+.course-categories {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.category-list {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.category-card {
+  background-color: white;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 30%;
+  text-align: center;
+}
+
+.category-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* About Section */
+.about {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px 20px;
+  background-color: #ffffff;
+}
+
+.about-content {
+  width: 50%;
+}
+
+.about-content h2 {
+  font-size: 2rem;
+}
+
+.about-content p {
+  font-size: 1.1rem;
+  margin: 15px 0;
+}
+
+.about-image {
+  width: 40%;
+  border-radius: 10px;
+}
+
+/* Testimonials Section */
+.testimonials {
+  background-color: #f9f9f9;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.testimonial {
+  margin: 20px 0;
+  font-style: italic;
+}
+
+.testimonial h4 {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Footer */
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 15px;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .hero h1 {
+      font-size: 1.8rem;
+  }
+
+  .category-list {
+      flex-direction: column;
+  }
+
+  .about {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .about-content {
+      width: 80%;
+      text-align: center;
+  }
+
+  .about-image {
+      width: 80%;
+      margin-top: 20px;
+  }
+}
+
+/* halaman courses */
+.category-card {
+  background-color: rgba(169, 169, 169, 0.7); /* Warna abu-abu transparan */
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, height 0.5s ease; /* Animasi perubahan warna dan tinggi */
+  overflow: hidden; /* Menyembunyikan konten yang melampaui batas */
+  height: 250px; /* Tinggi card default */
+  display: block;
+  text-decoration: none;
+  color: inherit; 
+}
+
+.category-card:hover {
+  background-color: rgba(169, 169, 169, 1); /* Perubahan warna saat hover */
+  height: 350px; /* Tinggi card bertambah saat hover */
+}
+
+.category-card img {
+  width: 100%; /* Gambar akan memenuhi lebar card */
+  height: auto; /* Tinggi otomatis untuk menjaga rasio gambar */
+  border-radius: 8px;
+}
+
+.category-card .university-logo {
+  width: 190px; /* Ukuran logo */
+  height: 190px; /* Tinggi logo */
+  border-radius: 0; /* Membuat logo berbentuk bulat */
+  margin-bottom: 15px; /* Memberikan jarak antara logo dan judul */
+}
+
+.category-card h3 {
+  color: white;
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+/* Penjelasan materi yang tersembunyi */
+.category-card .description {
+  display: none; /* Sembunyikan penjelasan materi awalnya */
+  margin-top: 10px;
+  color: white;
+  font-size: 16px;
+}
+
+/* Tampilkan penjelasan materi saat card di-hover */
+.category-card:hover .description {
+  display: block; /* Menampilkan penjelasan materi saat hover */
+}
+.about-content {
+  width: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px); 
+  margin: 0 auto; 
+}

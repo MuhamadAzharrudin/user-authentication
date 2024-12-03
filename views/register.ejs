@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #f1c40f, #e74c3c); /* Gradient berbeda untuk halaman register */
+      }
+      
+      .container-form {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+      
+      .register-form h1 {
+        color: #e74c3c; /* Warna judul merah yang lebih mencolok */
+        margin-bottom: 20px;
+      }
+      
+      label {
+        font-size: 14px;
+        color: #333;
+      }
+      
+      input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 14px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border-color 0.3s ease-in-out;
+      }
+      
+      input[type="text"]:focus, input[type="password"]:focus {
+        border-color: #e74c3c;
+        box-shadow: 0 0 8px rgba(231, 76, 60, 0.8); /* Efek focus dengan warna merah */
+      }
+      
+      button {
+        width: 100%;
+        padding: 14px;
+        background-color: #e74c3c; /* Warna tombol merah */
+        border: none;
+        border-radius: 6px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+      }
+      
+      button:hover {
+        background-color: #c0392b; /* Warna lebih gelap saat hover */
+      }
+      
+      p {
+        margin-top: 15px;
+        font-size: 14px;
+        color: #333;
+      }
+      
+      a {
+        text-decoration: none;
+        color: #e74c3c;
+      }
+      
+      a:hover {
+        text-decoration: underline;
+      }
+      
+  </style>
+</head>
+<body>
+
+<div class="container-form register-form">
+  <h1>Register</h1>
+  <form action="/register" method="POST">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required>
+    <br>
+    <button type="submit">Register</button>
+  </form>
+  <p>Sudah punya akun? <a href="/login">Login</a></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('/images/background2.jpg'); /* Tambahkan gambar background */
+    background-size: cover;
+    background-position: center;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/* Header Styles */
+.header {
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    color: white;
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar ul {
+    display: flex;
+}
+
+.navbar li {
+    margin-left: 20px;
+    position: relative; /* Needed for dropdown positioning */
+}
+
+.navbar a {
+    color: white;
+    font-size: 16px;
+    padding: 10px 15px;
+}
+
+.navbar a:hover {
+    background-color: #555;
+    border-radius: 5px;
+}
+
+/* Dropdown Menu */
+/* Dropdown Menu */
+.dropdown-menu {
+    display: none; /* Awalnya disembunyikan */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #444;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    list-style: none;
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+/* Tampilkan dropdown hanya ketika kursor ada di dropdown */
+.dropdown:hover .dropdown-menu {
+    display: block; /* Tampilkan menu dropdown */
+}
+
+/* Pastikan menu tertutup saat kursor keluar dari dropdown */
+.dropdown-menu:hover {
+    display: block; /* Dropdown tetap terlihat selama kursor ada di menu */
+}
+
+/* Link dalam dropdown */
+.dropdown-menu li {
+    margin: 0;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+    background-color: #666;
+}
+
+
+/* Contact Page Styles */
+.contact-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* White with transparency */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.contact-container h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.contact-container p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+.contact-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.contact-item {
+    width: 30%;
+    margin-bottom: 20px;
+}
+
+.contact-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #007BFF;
+}
+
+.contact-item p {
+    font-size: 1rem;
+    color: #444;
+}
+
+.social-link img {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.social-link:hover img {
+    filter: brightness(1.2); /* Highlight the icon on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-info {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contact-item {
+        width: 80%;
+        text-align: center;
+    }
+}

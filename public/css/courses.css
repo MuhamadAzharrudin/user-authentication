@@ -1,0 +1,24 @@
+.category-card {
+    background-color: rgba(169, 169, 169, 0.7); /* Warna abu-abu transparan */
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.category-card:hover {
+    background-color: rgba(169, 169, 169, 1); /* Perubahan warna saat hover */
+}
+
+.category-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.category-card h3 {
+    color: white;
+    margin-top: 10px;
+    font-size: 20px;
+}
