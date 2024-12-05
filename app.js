@@ -5,7 +5,6 @@ const bcrypt = require('bcryptjs');
 const mysql = require('mysql2');
 const { body, validationResult } = require('express-validator');
 const session = require('express-session');
-const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,14 +31,12 @@ db.connect((err) => {
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views')); // Pastikan views directory terdefinisi dengan benar
 
 // Setup express-session
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'your-secret-key', // Ganti dengan string rahasia
+  secret: 'your-secret-key', // Ganti dengan string rahasia
   resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }  // Jika menggunakan HTTPS, set secure: true
+  saveUninitialized: true
 }));
 
 // Middleware untuk mengecek apakah user sudah login
@@ -51,15 +48,14 @@ function isLoggedIn(req, res, next) {
   }
 }
 
-// Rute untuk halaman utama (root) yang mengarahkan ke login
+// Rute Default untuk Halaman Login
 app.get('/', (req, res) => {
-  res.redirect('/login');
+  res.redirect('/login'); // Arahkan ke login jika akses root
 });
-
 
 // Rute Login
 app.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login'); // Render halaman login
 });
 
 app.post('/login', (req, res) => {
@@ -95,7 +91,7 @@ app.post('/login', (req, res) => {
 
 // Rute Registrasi
 app.get('/register', (req, res) => {
-  res.render('register');
+  res.render('register'); // Render halaman registrasi
 });
 
 app.post(
@@ -122,7 +118,7 @@ app.post(
           console.error(err);
           return res.send('Terjadi kesalahan saat mendaftar');
         }
-        res.redirect('/login');
+        res.redirect('/login'); // Arahkan ke login setelah registrasi berhasil
       });
     });
   }
@@ -130,7 +126,7 @@ app.post(
 
 // Rute Halaman Utama dan Halaman Lain yang membutuhkan login
 app.get('/home', isLoggedIn, (req, res) => {
-  res.render('home');
+  res.render('home'); // Render halaman home setelah login
 });
 
 app.get('/courses', isLoggedIn, (req, res) => {
@@ -157,9 +153,20 @@ app.get('/courses/mit', isLoggedIn, (req, res) => {
   res.render('mit');
 });
 
+// Rute Logout
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.send('Gagal logout');
+    }
+
+    res.redirect('/login'); // Arahkan ke login setelah logout
+  });
+});
+
 // Rute Error 404 jika halaman tidak ditemukan
 app.use((req, res) => {
-  res.status(404).render('404', { error: 'Halaman tidak ditemukan' }); // Halaman error 404 khusus
+  res.redirect('/login'); // Arahkan ke login jika halaman tidak ditemukan
 });
 
 // Jalankan Server
