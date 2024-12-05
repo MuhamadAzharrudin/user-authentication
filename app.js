@@ -39,7 +39,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'your-secret-key', // Ganti dengan string rahasia
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: process.env.NODE_ENV === 'production' }  // Gunakan HTTPS di lingkungan produksi
+  cookie: { secure: false }  // Jika menggunakan HTTPS, set secure: true
 }));
 
 // Middleware untuk mengecek apakah user sudah login
@@ -55,6 +55,7 @@ function isLoggedIn(req, res, next) {
 app.get('/', (req, res) => {
   res.redirect('/login');
 });
+
 
 // Rute Login
 app.get('/login', (req, res) => {
