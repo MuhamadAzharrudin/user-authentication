@@ -51,6 +51,12 @@ function isLoggedIn(req, res, next) {
   }
 }
 
+// Rute untuk halaman utama (root) yang mengarahkan ke login
+app.get('/', (req, res) => {
+  res.redirect('/login');
+});
+
+
 // Rute Login
 app.get('/login', (req, res) => {
   res.render('login');
@@ -149,17 +155,6 @@ app.get('/courses/harvard', isLoggedIn, (req, res) => {
 
 app.get('/courses/mit', isLoggedIn, (req, res) => {
   res.render('mit');
-});
-
-// Rute Logout
-app.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.send('Gagal logout');
-    }
-
-    res.redirect('/login'); // Arahkan ke login setelah logout
-  });
 });
 
 // Rute Error 404 jika halaman tidak ditemukan
