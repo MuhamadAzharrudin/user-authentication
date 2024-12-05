@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const mysql = require('mysql2');
 const { body, validationResult } = require('express-validator');
 const session = require('express-session');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,12 +32,14 @@ db.connect((err) => {
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views')); // Pastikan views directory terdefinisi dengan benar
 
 // Setup express-session
 app.use(session({
-  secret: 'your-secret-key', // Ganti dengan string rahasia
+  secret: process.env.SESSION_SECRET || 'your-secret-key', // Ganti dengan string rahasia
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { secure: false }  // Jika menggunakan HTTPS, set secure: true
 }));
 
 // Middleware untuk mengecek apakah user sudah login
@@ -160,8 +163,8 @@ app.get('/logout', (req, res) => {
 });
 
 // Rute Error 404 jika halaman tidak ditemukan
-app.get('*', (req, res) => {
-  res.status(404).render('login');
+app.use((req, res) => {
+  res.status(404).render('404', { error: 'Halaman tidak ditemukan' }); // Halaman error 404 khusus
 });
 
 // Jalankan Server
