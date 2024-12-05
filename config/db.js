@@ -1,16 +1,16 @@
 // config/db.js
 const mysql = require('mysql');
-
+require('dotenv').config();
 // Koneksi ke database MySQL
-const connection = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'admin',        
-  password: 'admin123',         
-  database: 'web_users' 
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  // port: process.env.DB_PORT || 3306,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
 });
 
-// Cek koneksi
-connection.connect((err) => {
+db.connect((err) => {  // Gantilah 'connection' menjadi 'db'
   if (err) {
     console.error('Error connecting to the database:', err.stack);
     return;
@@ -18,4 +18,4 @@ connection.connect((err) => {
   console.log('Connected to MySQL database');
 });
 
-module.exports = connection;
+module.exports = db;  // Pastikan Anda mengekspor db

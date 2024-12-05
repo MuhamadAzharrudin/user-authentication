@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/app.js"
+    }
+  ],
+  "env": {
+    "DB_HOST": "mysql-9tnp.railway.internal",
+    "DB_USER": "root",
+    "DB_PASSWORD": "sgLHwehaTajJSrzhpSiPhwDtAffyFajz",
+    "DB_NAME": "railway",
+    "DB_PORT":"3306"
+  }
+}

@@ -1,27 +1,60 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql2');
-const app = express();
+const { body, validationResult } = require('express-validator');
+const session = require('express-session');
 
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Konfigurasi Database
 const db = mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'admin',  
-  password: 'admin123',  
-  database: 'web_users'
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
+// Cek koneksi database
+db.connect((err) => {
+  if (err) {
+    console.error('Gagal terhubung ke database:', err.stack);
+    process.exit(1);
+  }
+  console.log('Terhubung ke database');
+});
+
+// Middleware
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
 app.set('view engine', 'ejs');
+
+// Setup express-session
+app.use(session({
+  secret: 'your-secret-key', // Ganti dengan string rahasia
+  resave: false,
+  saveUninitialized: true
+}));
+
+// Middleware untuk mengecek apakah user sudah login
+function isLoggedIn(req, res, next) {
+  if (req.session.loggedIn) {
+    return next();
+  } else {
+    return res.redirect('/login');
+  }
+}
+
+// Rute Login
 app.get('/login', (req, res) => {
   res.render('login');
 });
+
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-
 
   db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
     if (err) {
@@ -34,78 +67,104 @@ app.post('/login', (req, res) => {
     }
 
     const user = results[0];
-    if (bcrypt.compareSync(password, user.password)) {
-      res.redirect('/home');
-    } else {
-      res.send('Password salah');
-    }
+    bcrypt.compare(password, user.password, (err, isMatch) => {
+      if (err) {
+        console.error(err);
+        return res.send('Terjadi kesalahan pada server');
+      }
+
+      if (isMatch) {
+        req.session.loggedIn = true;  // Menyimpan status login pengguna
+        req.session.username = username; // Menyimpan username pengguna
+        res.redirect('/home'); // Arahkan ke halaman home setelah login berhasil
+      } else {
+        res.send('Password salah');
+      }
+    });
   });
 });
 
-
+// Rute Registrasi
 app.get('/register', (req, res) => {
   res.render('register');
 });
 
-
-app.post('/register', (req, res) => {
-  const { username, password } = req.body;
-
- 
-  const hashedPassword = bcrypt.hashSync(password, 8);
-
-
-  db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.send('Terjadi kesalahan saat mendaftar');
+app.post(
+  '/register',
+  [
+    body('username').isLength({ min: 3 }).withMessage('Username minimal 3 karakter'),
+    body('password').isLength({ min: 6 }).withMessage('Password minimal 6 karakter'),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render('register', { errors: errors.array() });
     }
-    res.redirect('/login');
-  });
-});
 
-//rute set up hare got dammed
-app.get('/home', (req, res) => {
-  console.log("work");
+    const { username, password } = req.body;
+    bcrypt.hash(password, 8, (err, hashedPassword) => {
+      if (err) {
+        console.error('Error saat hashing password:', err);
+        return res.send('Kesalahan pada server');
+      }
+
+      db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err) => {
+        if (err) {
+          console.error(err);
+          return res.send('Terjadi kesalahan saat mendaftar');
+        }
+        res.redirect('/login');
+      });
+    });
+  }
+);
+
+// Rute Halaman Utama dan Halaman Lain yang membutuhkan login
+app.get('/home', isLoggedIn, (req, res) => {
   res.render('home');
 });
 
-app.get('/courses', (req, res) => {
-  console.log("work");
+app.get('/courses', isLoggedIn, (req, res) => {
   res.render('courses');
 });
-app.get('/about', (req, res) => {
+
+app.get('/about', isLoggedIn, (req, res) => {
   res.render('about');
 });
 
-app.get('/contact', (req, res) => {
+app.get('/contact', isLoggedIn, (req, res) => {
   res.render('contact');
 });
 
-
-app.get('/courses/oxford', (req, res) => {
-  console.log("work");
-  res.render('oxford'); 
+app.get('/courses/oxford', isLoggedIn, (req, res) => {
+  res.render('oxford');
 });
 
-app.get('/courses/harvard', (req, res) => {
-  console.log("work");
-  res.render('harvard'); 
+app.get('/courses/harvard', isLoggedIn, (req, res) => {
+  res.render('harvard');
 });
 
-app.get('/courses/mit', (req, res) => {
-  console.log("work");
-  res.render('mit'); 
+app.get('/courses/mit', isLoggedIn, (req, res) => {
+  res.render('mit');
 });
 
+// Rute Logout
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.send('Gagal logout');
+    }
 
+    res.redirect('/login'); // Arahkan ke login setelah logout
+  });
+});
+
+// Rute Error 404 jika halaman tidak ditemukan
 app.get('*', (req, res) => {
-  res.status(404).send('Page Not Found');
+  res.status(404).render('login');
 });
 
-
-app.listen(3000, () => {
-  console.log('Server berjalan di http://localhost:3000/login');
+// Jalankan Server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
-
-
